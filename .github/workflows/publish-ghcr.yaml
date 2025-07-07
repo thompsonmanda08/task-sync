@@ -28,4 +28,5 @@ jobs:
           push: true
           tags: |
             ghcr.io/thompsonmanda08/task-sync-api:latest
+            ghcr.io/thompsonmanda08/task-sync-api:0.1
             ghcr.io/thompsonmanda08/task-sync-api:${{ github.sha }}
