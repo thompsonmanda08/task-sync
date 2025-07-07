@@ -31,7 +31,7 @@ function RootLayout() {
     useState(false);
 
   useFrameworkReady();
-  const {isAuthenticated} = useAuthStore()
+  const { isAuthenticated } = useAuthStore();
 
   const [fontsLoaded, error] = useFonts({
     'Inter-Regular': Inter_400Regular,

@@ -52,7 +52,7 @@ export default function ListsScreen() {
         <FlatList
           data={lists}
           refreshControl={
-            <RefreshControl  refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (

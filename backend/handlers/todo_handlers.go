@@ -462,7 +462,7 @@ func DeleteTodoList(c *fiber.Ctx) error {
 	if err := db.Where("id = ? AND owner_id = ?", id, userID).First(&todoList).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return utils.SendErrorResponse(c, fiber.StatusNotFound, "Todo List not found or not owned by user", errors.New("todo list not found"))
-		
+
 		}
 		return utils.SendErrorResponse(c, fiber.StatusInternalServerError, "Failed to retrieve Todo List", err)
 	}
