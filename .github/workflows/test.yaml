@@ -1,0 +1,16 @@
+name: RAW TEST Docker Image CI for GHCR
+
+on:
+  push:
+    branches: ["main", "backend-production"] # Only trigger on pushes to 'prod' branch
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and push Container Image
+        run:
+          docker login --username thompsonmanda08 --password ${{ secrets.GH_PAT }} ghcr.io
+          docker build . -t ghcr.io/thompsonmanda08/task-sync-api:latest
+          docker push ghcr.io/thompsonmanda08/task-sync-api:latest

@@ -1,14 +1,31 @@
 name: Docker Image CI for GHCR
 
-on: push
+on:
+  push:
+    branches: ["backend-production"] # Triggers on these branches
 
 jobs:
   build_and_publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write # Required for pushing to GHCR
+
     steps:
       - uses: actions/checkout@v3
-      - name: Build and push Container Image
-        run:
-          docker login --username thompsonmanda08 --password ${{ secrets.GH_PAT }} ghcr.io
-          docker build . -t ghcr.io/thompsonmanda08/task-sync-api:latest
-          docker push ghcr.io/thompsonmanda08/task-sync-api:latest
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_PAT }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/thompsonmanda08/task-sync-api:latest
+            ghcr.io/thompsonmanda08/task-sync-api:${{ github.sha }}
