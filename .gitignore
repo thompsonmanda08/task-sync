@@ -1,10 +1,22 @@
+#VSCODE 
+./.vscode
+
 # dependencies
 node_modules/
+./node_modules/*
+next-env.d.ts
+bun.lockb
+yarn.lock
 
-# expo
+
+# Expo Mobile & Next Web Build and Cache
 .expo/
 dist/
 web-build/
+/build
+.next
+/.next/
+/out/
 expo-env.d.ts
 
 # native
@@ -28,7 +40,14 @@ yarn-error.*
 *.pem
 
 # local env files
+./.env*
 .env*.local
+./.env*.local
+.env
 
 # typescript
 *.tsbuildinfo
+
+# misc
+.DS_Store
+*.pem
