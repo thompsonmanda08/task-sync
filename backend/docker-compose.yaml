@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      # These are for the postgres container itself
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - task_sync_data:/var/lib/postgresql/data
+    healthcheck: # CHECKS IF DB IS READY
+      test: ["CMD-SHELL", "pg_isready -U postgres -d task_sync"] # Checks if DB is ready
+      interval: 5s # Check every 5 seconds
+      timeout: 5s # Timeout after 5 seconds
+      retries: 5 # Retry 5 times before marking as unhealthy
+      start_period: 10s # Give it 10 seconds to start up initially
+
+  app:
+    build: .
+    image: task-sync-api:v1.0.0
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy # Checks if DB is ready
+    environment:
+      DB_DRIVER: postgres
+      DB_HOST: postgres # <- Docker service name as host
+      DB_USER: ${DB_USER} # Read from the .env file
+      DB_PASSWORD: ${DB_PASSWORD} # Read from the .env file
+      DB_NAME: ${DB_NAME} # Read from the .env file
+      DB_PORT: ${DB_PORT} # Read from the .env file
+      DB_SSLMODE: ${DB_SSLMODE} # Read from the .env file
+      DB_TIMEZONE: ${DB_TIMEZONE} # Read from the .env file
+      JWT_SECRET: ${JWT_SECRET} # Read from the .env file
+      PORT: ${PORT}
+
+volumes:
+  task_sync_data:
